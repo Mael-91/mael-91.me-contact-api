@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func mailer(cf contactForm) (resp *rest.Response, err error) {
+func mailer(cf contactForm) (resp *rest.Response) {
 	key := os.Getenv("SENDGRIP_API_KEY")
 
 	receiver := os.Getenv("FIRSTNAME") + " " + os.Getenv("LASTNAME")
@@ -17,12 +17,12 @@ func mailer(cf contactForm) (resp *rest.Response, err error) {
 	to := mail.NewEmail(receiver, receiverEmail)
 
 	plainTextContent := cf.Message
-	html := "<strong>" + cf.Message + "<strong>" // Temporaire le temps de créer la template HTML pour les mails
+	html := cf.Body
 
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, html)
 	client := sendgrid.NewSendClient(key)
 	response, err := client.Send(message)
-	displayError(err)
+	checkErr(err)
 
-	return response, nil
+	return response
 }

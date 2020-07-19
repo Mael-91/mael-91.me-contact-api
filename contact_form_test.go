@@ -9,6 +9,8 @@ import (
 	"testing"
 )
 
+var handlers = Handlers{Template: initTemplate()}
+
 func TestContactFormHandlerWithSuccess(t *testing.T) {
 	form := &contactForm{
 		Firstname: "Mael",
@@ -24,7 +26,7 @@ func TestContactFormHandlerWithSuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(contactFormHandler)
+	handler := http.HandlerFunc(handlers.contactFormHandler)
 
 	handler.ServeHTTP(rr, req)
 
@@ -40,7 +42,7 @@ func TestContactFormWithEmptyContent(t *testing.T) {
 		t.Fatal(err)
 	}
 	resp := httptest.NewRecorder()
-	handler := http.HandlerFunc(contactFormHandler)
+	handler := http.HandlerFunc(handlers.contactFormHandler)
 
 	handler.ServeHTTP(resp, req)
 	assert.Equal(t, http.StatusBadRequest, resp.Code)
@@ -53,7 +55,7 @@ func TestContactFormWithBadMethod(t *testing.T) {
 	}
 
 	resp := httptest.NewRecorder()
-	handler := http.HandlerFunc(contactFormHandler)
+	handler := http.HandlerFunc(handlers.contactFormHandler)
 
 	handler.ServeHTTP(resp, req)
 	assert.Equal(t, http.StatusMethodNotAllowed, resp.Code)
@@ -66,7 +68,7 @@ func TestContactFormWithBadUrl(t *testing.T) {
 	}
 
 	resp := httptest.NewRecorder()
-	handler := http.HandlerFunc(contactFormHandler)
+	handler := http.HandlerFunc(handlers.contactFormHandler)
 
 	handler.ServeHTTP(resp, req)
 	assert.Equal(t, http.StatusNotFound, resp.Code)

@@ -3,20 +3,29 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"html/template"
 	"net/http"
 )
 
+type Handlers struct {
+	Template *template.Template
+}
+
 func serve() {
-	r := GetRoutes()
-	fmt.Printf("Starting HTTP server on port %s\n", ":2000")
-	if err := http.ListenAndServe(":2000", r); err != nil {
+	handlers := &Handlers{Template: initTemplate()}
+	srv := http.Server{
+		Addr: ":2000",
+		Handler: handlers.GetRoutes(),
+	}
+	fmt.Printf("Starting HTTP server on port %s\n", srv.Addr)
+	if err := srv.ListenAndServe(); err != nil {
 		panic(err)
 	}
 }
 
-func GetRoutes() *mux.Router {
+func (h *Handlers) GetRoutes() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/contact", contactFormHandler).
+	r.HandleFunc("/contact", h.contactFormHandler).
 		Methods(http.MethodPost, http.MethodOptions)
 	r.Use(CORSMethodMiddleware("/contact"))
 	return r

@@ -15,6 +15,7 @@ type contactForm struct {
 	Subject   string
 	Message   string
 	ReCaptcha string
+	Body string
 }
 
 type response struct {
@@ -22,7 +23,7 @@ type response struct {
 	Message string
 }
 
-func contactFormHandler(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) contactFormHandler(w http.ResponseWriter, r *http.Request) {
 	response := response{
 		Code:    200,
 		Message: "The email has been sent",
@@ -60,8 +61,10 @@ func contactFormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = mailer(contactForm)
-	displayError(err)
+	err = contactForm.ParseTemplate("mail.html", contactForm, h)
+	checkErr(err)
+
+	_ = mailer(contactForm)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
