@@ -30,7 +30,7 @@ func (h *Handlers) contactFormHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 
-	if r.URL.Path != "/contact" {
+	if r.URL.Path != "/" {
 		http.Error(w, "404 Not Found", http.StatusNotFound)
 		return
 	}
