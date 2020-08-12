@@ -21,7 +21,7 @@ func TestContactFormHandlerWithSuccess(t *testing.T) {
 		ReCaptcha: "aze",
 	}
 	jsonForm, _ := json.Marshal(form)
-	req, err := http.NewRequest("POST", "/contact", bytes.NewReader(jsonForm))
+	req, err := http.NewRequest("POST", "/", bytes.NewReader(jsonForm))
 	if err != nil {
 		t.Fatal(err)
 	}
