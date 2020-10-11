@@ -16,7 +16,7 @@ func init() {
 			log.Fatal("Error loading .env, .env.dev.local file")
 		}
 	} else {
-		err := godotenv.Load(".env")
+		err := godotenv.Load("/etc/mael-91.me/portfolio/contact-api/.env")
 		if err != nil {
 			log.Fatal("Error loading .env file")
 		}

@@ -6,7 +6,7 @@ import (
 )
 
 func initTemplate() *template.Template {
-	return template.Must(template.ParseGlob("template/*"))
+	return template.Must(template.ParseGlob("/etc/mael-91.me/portfolio/contact-api/template/*"))
 }
 
 func (c *contactForm) ParseTemplate(templateName string, data interface{}, h *Handlers) error {
