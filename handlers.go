@@ -14,7 +14,7 @@ type Handlers struct {
 func serve() {
 	handlers := &Handlers{Template: initTemplate()}
 	srv := http.Server{
-		Addr: ":2000",
+		Addr: ":2020",
 		Handler: handlers.GetRoutes(),
 	}
 	fmt.Printf("Starting HTTP server on port %s\n", srv.Addr)
@@ -25,7 +25,7 @@ func serve() {
 
 func (h *Handlers) GetRoutes() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/", h.contactFormHandler).
+	r.HandleFunc("/contact", h.contactFormHandler).
 		Methods(http.MethodPost, http.MethodOptions)
 	r.Use(CORSMethodMiddleware("/contact"))
 	return r
